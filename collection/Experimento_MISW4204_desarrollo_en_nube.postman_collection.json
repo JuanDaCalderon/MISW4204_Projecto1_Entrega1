@@ -1,0 +1,205 @@
+{
+	"info": {
+		"_postman_id": "2921b487-7ad4-4432-9a5b-c046110342f7",
+		"name": "Experimento_MISW4204_desarrollo_en_nube",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10947516"
+	},
+	"item": [
+		{
+			"name": "/api/auth/signup",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n    \"username\": \"user2\",\r\n    \"password1\": \"qqqqqq\",\r\n    \"password2\": \"qqqqqq\",\r\n    \"email\": \"user2@gmail.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/auth/signup",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/auth/login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n    \"username\": \"user2\",\r\n    \"password\": \"qqqqqq\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/auth/login",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/tasks",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/api/tasks?max=5&order=1",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"tasks"
+					],
+					"query": [
+						{
+							"key": "max",
+							"value": "5"
+						},
+						{
+							"key": "order",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/tasks",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "fileName",
+							"type": "file",
+							"src": "/C:/Users/juanda/Downloads/VideoCorto.mp4"
+						},
+						{
+							"key": "newFormat",
+							"value": "MPEG",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{host}}/api/tasks",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"tasks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/tasks/<int:id_task>",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/api/tasks/1",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"tasks",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/tasks/<int:id_task>",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/api/tasks/1",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"tasks",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
