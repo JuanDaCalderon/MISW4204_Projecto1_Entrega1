@@ -11,6 +11,18 @@ class Usuario(db.Model):
     correo_electronico = db.Column(db.String(50))
     password = db.Column(db.String(50))
     
+
+class UsuarioSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = Usuario
+        include_relationships = True
+        include_fk = True
+        load_instance = True
+    id = fields.Integer()
+    usuario=fields.String()
+    correo_electronico = fields.String()
+    password = fields.String()
+    
 class Tareas(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(128))
@@ -18,3 +30,16 @@ class Tareas(db.Model):
     timeStamp = db.Column(db.String(128))
     status = db.Column(db.String(128))
     usuario = db.Column(db.Integer, db.ForeignKey('usuario.id'))
+
+
+class TareasSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = Tareas
+        include_relationships = True
+        include_fk = True
+        load_instance = True
+    id = fields.Integer()
+    nombre = fields.String()
+    timeStamp = fields.String()
+    stastus = fields.String()
+    usuario = fields.Nested(UsuarioSchema, many=True)

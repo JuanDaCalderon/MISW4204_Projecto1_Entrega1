@@ -7,7 +7,8 @@ from tareas import convertirArchivo
 
 from modelos import \
     db, \
-    Usuario, Tareas \
+    Usuario, Tareas, \
+    UsuarioSchema, TareasSchema
 
 """ 
     VistaSignup
@@ -15,6 +16,8 @@ from modelos import \
     Parametros: { username (String), password1 (String), password2 (String), email (String) } 
     Retorna: { mensaje }
 """
+
+tareas_schema = TareasSchema()
 class VistaSignup(Resource):
     def post(self):
         usuario = Usuario.query.filter(Usuario.correo_electronico == request.json["email"]).first()
@@ -63,7 +66,14 @@ class VistaTasks(Resource):
         max = request.args.get("max")
         order = request.args.get("order")
         userId = get_jwt_identity()
-        return {"tareas": ['todas las tareas listadas para este usuario'] , "maxFilter": max, "orderFilter": order}
+        print("el usurio : " , userId)
+        tareas = Tareas.query.filter(Tareas.usuario == userId)
+        print("tareas : " , tareas)
+        if tareas is None:
+            return 'No hay tareas ...'
+        
+        return [tareas_schema.dump(tarea) for tarea in tareas]
+        #return {"tareas": ['todas las tareas listadas para este usuario'] , "maxFilter": max, "orderFilter": order}
     
     @jwt_required()
     def post(self): #Luis
