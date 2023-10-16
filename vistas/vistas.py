@@ -62,6 +62,7 @@ class VistaTasks(Resource):
     def get(self):
         max = request.args.get("max")
         order = request.args.get("order")
+        userId = get_jwt_identity()
         return {"tareas": ['todas las tareas listadas para este usuario'] , "maxFilter": max, "orderFilter": order}
     
     @jwt_required()
@@ -70,7 +71,7 @@ class VistaTasks(Resource):
         format = request.form["newFormat"]
         fechaDeCreacion = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
         userId = get_jwt_identity()
-        convertirArchivo.delay( file.filename , format)
+        convertirArchivo.delay( file.filename , format) #Cola de tarea
         nueva_tarea = Tareas(nombre=file.filename, timeStamp=fechaDeCreacion, status='uploaded', usuario=userId)
         db.session.add(nueva_tarea)
         db.session.commit()
