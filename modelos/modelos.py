@@ -14,6 +14,7 @@ class Usuario(db.Model):
 class Tareas(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(128))
+    convertirFormato = db.Column(db.String(128))
     timeStamp = db.Column(db.String(128))
     status = db.Column(db.String(128))
     usuario = db.Column(db.Integer, db.ForeignKey('usuario.id'))

@@ -71,10 +71,11 @@ class VistaTasks(Resource):
         format = request.form["newFormat"]
         fechaDeCreacion = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
         userId = get_jwt_identity()
-        convertirArchivo.delay( file.filename , format) #Cola de tarea
-        nueva_tarea = Tareas(nombre=file.filename, timeStamp=fechaDeCreacion, status='uploaded', usuario=userId)
+        nueva_tarea = Tareas(nombre=file.filename, convertirFormato = format, timeStamp=fechaDeCreacion, status='uploaded', usuario=userId)
         db.session.add(nueva_tarea)
         db.session.commit()
+        
+        convertirArchivo.delay(file.filename , format) #Cola de tarea
         return {
             "mensaje": 'se ha subido el archivo correctamente y en un tiempo la conversion sera completada para su descarga, por favor revisar en unos minutos',
             "archivo": file.filename,
@@ -94,14 +95,26 @@ class VistaTasks(Resource):
 class VistaTask(Resource):
     @jwt_required()
     def get(self, id_task): #Juanda
-        return { 
-                "idTask": id_task,
-                "mensaje": "Tarea con sus archivos recuperados correctamente",
-                "tarea" : {
-                    "archivoOriginal": 'https://url',
-                    "archivoConvertido": 'https://url'
+        idTask = id_task
+        userId = get_jwt_identity()
+        tarea = Tareas.query.filter(Tareas.id == idTask, Tareas.usuario == userId).first()
+        if tarea is None:
+            return { "mensaje": "No existe una tarea con este id" }, 404
+        elif tarea.status == 'uploaded':
+            return { "mensaje": "Aun no se ha terminado de convertir el archivo, vuelve a intentarlo mas tarde" }
+        else:
+            archivoOriginal = str(tarea.nombre)
+            archivoConvertido = str(str(tarea.nombre).split(".")[0].lower() + '.' + tarea.convertirFormato).lower()
+            path = 'archivos/' + str(tarea.id) + '/'
+            return { 
+                    "id": idTask,
+                    "mensaje": "Archivos recuperados exitosamente",
+                    "tarea" : {
+                        "archivoOriginal": path + archivoOriginal,
+                        "archivoConvertido": path + archivoConvertido,
+                        "url de descarga": 'https://www.adslzone.net/app/uploads-adslzone.net/2019/04/borrar-fondo-imagen-1200x675.jpg'
+                    }
                 }
-            }
         
     @jwt_required()
     def delete(self, id_task): # Leo
