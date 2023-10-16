@@ -59,14 +59,14 @@ class VistaLogin(Resource):
 """
 class VistaTasks(Resource):
     @jwt_required()
-    def get(self):
+    def get(self): #Sneyder
         max = request.args.get("max")
         order = request.args.get("order")
         userId = get_jwt_identity()
         return {"tareas": ['todas las tareas listadas para este usuario'] , "maxFilter": max, "orderFilter": order}
     
     @jwt_required()
-    def post(self):
+    def post(self): #Luis
         file = request.files['fileName']
         format = request.form["newFormat"]
         fechaDeCreacion = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
@@ -93,7 +93,7 @@ class VistaTasks(Resource):
 """
 class VistaTask(Resource):
     @jwt_required()
-    def get(self, id_task):
+    def get(self, id_task): #Juanda
         return { 
                 "idTask": id_task,
                 "mensaje": "Tarea con sus archivos recuperados correctamente",
@@ -104,7 +104,7 @@ class VistaTask(Resource):
             }
         
     @jwt_required()
-    def delete(self, id_task):
+    def delete(self, id_task): # Leo
         return { 
                 "idTask": id_task,
                 "mensaje": "Tarea eliminada correctamente"
