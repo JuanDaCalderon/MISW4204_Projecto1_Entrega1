@@ -40,6 +40,6 @@ class TareasSchema(SQLAlchemyAutoSchema):
         load_instance = True
     id = fields.Integer()
     nombre = fields.String()
+    convertirFormato = fields.String()
     timeStamp = fields.String()
     stastus = fields.String()
-    usuario = fields.Nested(UsuarioSchema, many=True)
