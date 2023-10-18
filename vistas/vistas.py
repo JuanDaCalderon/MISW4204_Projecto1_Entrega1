@@ -4,6 +4,7 @@ from flask_restful import Resource
 import hashlib
 from datetime import datetime
 from tareas import convertirArchivo, validacionArchivos, crearTareaEnDB
+from werkzeug.utils import secure_filename
 
 from modelos import \
     db, \
@@ -67,13 +68,16 @@ class VistaTasks(Resource):
     
     @jwt_required()
     def post(self): #Luis
-        #file = request.files['fileName']
+        file = request.files['fileName']
+        nombreArchivo = secure_filename(file.filename)
+        print("*****Archivo:" + nombreArchivo)
+        
         #format = request.form["newFormat"]
         
-        file = request.json['fileName']
-        format = request.json["newFormat"]
+        #file = request.json['fileName']
+        #format = request.json["newFormat"]
         
-        validacion = validacionArchivos(file, format)
+        '''validacion = validacionArchivos(file, format)
         
         if validacion != "":
             return "{ validacion }"            
@@ -89,7 +93,7 @@ class VistaTasks(Resource):
                 "Nuevo formato": format,
                 "fecha Creacion": fechaDeCreacion,
                 "id_Usuario": userId
-            }
+            }'''
 
 
 """ 
