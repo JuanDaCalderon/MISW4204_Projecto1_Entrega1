@@ -80,7 +80,7 @@ class VistaTasks(Resource):
         else:
             fechaDeCreacion = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
             userId = get_jwt_identity()
-            id = crearTareaEnDB(file, fechaDeCreacion, userId)  # Crea la tarea en la DB y trae el ID para poder actualizar el registro despues de la conversion
+            id = crearTareaEnDB(file, format, fechaDeCreacion, userId)  # Crea la tarea en la DB y trae el ID para poder actualizar el registro despues de la conversion
             convertirArchivo.delay( file , format, id) #Cola de tarea
             
             return {

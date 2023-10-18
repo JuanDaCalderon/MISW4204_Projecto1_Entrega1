@@ -3,6 +3,7 @@ import calendar
 import os
 import subprocess
 import ffmpeg
+import errno
 from celery import shared_task
 from datetime import datetime
 from flask_jwt_extended import jwt_required, create_access_token, decode_token, get_jwt_identity
@@ -13,25 +14,14 @@ formatosPermitidos = ["mp4", "webm", "avi", "mpeg", "wmv"]
 @shared_task(queue="cola", ignore_result=False)
 def convertirArchivo(file, format, id_task):
     #Aqui se hace la conversión del archivo al nuevo formato, despues hay que cambiar el valor del estado de la tarea en la base de datos
-    
     format = format.replace('.','') # Elimina el punto de la extension en caso de que lo tenga
     archivoExtension = getNombreArchivo(file) # trae el nombre del archivo y la extension en un arreglo
-    outputName = archivoExtension[0] + '_converted_' + str(getTimeStamp()) + '.' + format # Crea el nombre del archivo convertio (nombre original + converted + timeStamp + extension)      
-    print("***** Entre a la coversion ****")
-    conversion(file, outputName)
-    print("----- Sali de la conversion -----")
+    
+    conversion(file, format, id_task)
+
     UpdateEstado(id_task)    # Actualiza el registro de la tarea    
-    #time.sleep(10)
-    print('video ->', file)
-    print('formato a convertir ->', format)
-    
-    time.sleep(20)
-    tarea = Tareas.query.filter(Tareas.id == id_task).first()
-    tarea.status = 'processed'
-    db.session.commit()
-    print('video ->', file)
-    print('formato a convertir ->', format)
-    
+
+
     
 def validacionArchivos(file, format):   
     result = ""
@@ -50,10 +40,16 @@ def validacionArchivos(file, format):
     return result
 
 
-def conversion(fileName, outputName):
+def conversion(fileName, format, id_task):
+    try:
+        os.mkdir("archivos/" + str(id_task))
+    except OSError as e:
+        if e.erno != errno.EEXIST:
+            raise
+    nombreArchivo = getNombreArchivo(fileName)[0]    
     (
-        ffmpeg.input("archivos/VideoCorto.mp4")
-        .output("archivos/output/" + outputName)
+        ffmpeg.input(fileName)
+        .output("archivos/" + str(id_task) + "/" + nombreArchivo + "." + format)
         .run()
     )
     return "Hecho"
@@ -66,15 +62,15 @@ def getNombreArchivo(file):
     ruta = os.path.split(file) # divide la cadena file en ruta y nombre del archivo
     return os.path.splitext(ruta[1]) # retorna arreglo con el nombre del archivo y la extension
 
-def crearTareaEnDB(file, fechaDeCreacion, userId):
-    nueva_tarea = Tareas(nombre=file, timeStamp=fechaDeCreacion, status='uploaded', usuario=userId)
+def crearTareaEnDB(file, format, fechaDeCreacion, userId):
+    nueva_tarea = Tareas(nombre=file, convertirFormato = format, timeStamp=fechaDeCreacion, status='uploaded', usuario=userId)
     db.session.add(nueva_tarea)
     db.session.commit() # Crea la tarea en el base de datos   
     return db.session.query(Tareas).order_by(Tareas.id.desc()).first().id # Devuelve el id de la tarea creada
     
 def UpdateEstado(id):
-    registroParaActualizar = db.session.query(Tareas).get(id)  
-    print("++++++++ registro" + registroParaActualizar)    
-    registroParaActualizar.status = "processed"
-    db.session.add(registroParaActualizar)
+    tarea = Tareas.query.filter(Tareas.id == id).first()
+    tarea.status = 'processed'
     db.session.commit()
+
+    
