@@ -71,26 +71,18 @@ class VistaTasks(Resource):
     def post(self): #Luis
         file = request.files['fileName']
         fileName = file.filename
-        print("*****Archivo:" + fileName)
-        
         format = request.form["newFormat"]
-        print("Format -> " + format)
-        
-        
-        #file = request.json['fileName']
-        #format = request.json["newFormat"]
         
         validacion = validacionArchivos(fileName, format)
         
         if validacion != "":
-            return "{ validacion }"            
+            return { "mensaje": validacion 
+        }
         else:
             fechaDeCreacion = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
             userId = get_jwt_identity()
             id_task = crearTareaEnDB(fileName, format, fechaDeCreacion, userId)  # Crea la tarea en la DB y trae el ID para poder actualizar el registro despues de la conversion
-            
-            guardarArchivo(file, id_task, fileName)
-            
+            guardarArchivo(file, id_task, fileName)       
             convertirArchivo.delay(fileName , format, id_task) #Cola de tarea
             
             return {
@@ -100,7 +92,6 @@ class VistaTasks(Resource):
                 "fecha Creacion": fechaDeCreacion,
                 "id_Usuario": userId
             }
-
 
 """ 
     VistaTask
