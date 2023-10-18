@@ -5,7 +5,7 @@ MISW4204 Desarrollo de software en la nube
 redis-server <- WSL Ubuntu
 
 ## Cola
-celery -A tareas worker -Q cola -n cola@worker --pool=solo -l info
+celery -A app.celery_app worker -Q cola -n cola@worker --pool=solo -l info
 
 ## Lanzar aplicación
 Flask run
