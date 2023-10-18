@@ -3,8 +3,9 @@ from flask_jwt_extended import jwt_required, create_access_token, decode_token, 
 from flask_restful import Resource
 import hashlib
 from datetime import datetime
-from tareas import convertirArchivo, validacionArchivos, crearTareaEnDB
-from werkzeug.utils import secure_filename
+from tareas import convertirArchivo, validacionArchivos, crearTareaEnDB, crearCarpeta, guardarArchivo
+
+import os
 
 from modelos import \
     db, \
@@ -69,31 +70,36 @@ class VistaTasks(Resource):
     @jwt_required()
     def post(self): #Luis
         file = request.files['fileName']
-        nombreArchivo = secure_filename(file.filename)
-        print("*****Archivo:" + nombreArchivo)
+        fileName = file.filename
+        print("*****Archivo:" + fileName)
         
-        #format = request.form["newFormat"]
+        format = request.form["newFormat"]
+        print("Format -> " + format)
+        
         
         #file = request.json['fileName']
         #format = request.json["newFormat"]
         
-        '''validacion = validacionArchivos(file, format)
+        validacion = validacionArchivos(fileName, format)
         
         if validacion != "":
             return "{ validacion }"            
         else:
             fechaDeCreacion = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
             userId = get_jwt_identity()
-            id = crearTareaEnDB(file, format, fechaDeCreacion, userId)  # Crea la tarea en la DB y trae el ID para poder actualizar el registro despues de la conversion
-            convertirArchivo.delay( file , format, id) #Cola de tarea
+            id_task = crearTareaEnDB(fileName, format, fechaDeCreacion, userId)  # Crea la tarea en la DB y trae el ID para poder actualizar el registro despues de la conversion
+            
+            guardarArchivo(file, id_task, fileName)
+            
+            convertirArchivo.delay(fileName , format, id_task) #Cola de tarea
             
             return {
                 "mensaje": 'se ha subido el archivo correctamente y en un tiempo la conversion sera completada para su descarga, por favor revisar en unos minutos',
-                "archivo": file,
+                "archivo": fileName,
                 "Nuevo formato": format,
                 "fecha Creacion": fechaDeCreacion,
                 "id_Usuario": userId
-            }'''
+            }
 
 
 """ 

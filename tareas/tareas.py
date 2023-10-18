@@ -39,20 +39,27 @@ def validacionArchivos(file, format):
         
     return result
 
-
 def conversion(fileName, format, id_task):
-    try:
-        os.mkdir("archivos/" + str(id_task))
-    except OSError as e:
-        if e.erno != errno.EEXIST:
-            raise
     nombreArchivo = getNombreArchivo(fileName)[0]    
+    fileName = "archivos/" + str(id_task) + "/" + fileName
     (
         ffmpeg.input(fileName)
         .output("archivos/" + str(id_task) + "/" + nombreArchivo + "." + format)
         .run()
     )
     return "Hecho"
+
+def crearCarpeta(id_task):
+    ruta = "archivos/" + str(id_task)
+    try:
+        os.mkdir(ruta)
+    except OSError as e:
+        if e.erno != errno.EEXIST:
+            raise
+    return ruta   + "/"
+ 
+def guardarArchivo(file, id_task, fileName):
+    file.save(os.path.join(crearCarpeta(id_task), fileName))
  
 def getTimeStamp():
     current_GMT = time.gmtime() # time actual
