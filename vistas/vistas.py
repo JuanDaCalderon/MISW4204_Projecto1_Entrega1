@@ -5,8 +5,6 @@ import hashlib
 from datetime import datetime
 from tareas import convertirArchivo, validacionArchivos, crearTareaEnDB, crearCarpeta, guardarArchivo
 
-import os
-
 from modelos import \
     db, \
     Usuario, Tareas \
@@ -84,6 +82,8 @@ class VistaTasks(Resource):
             id_task = crearTareaEnDB(fileName, format, fechaDeCreacion, userId)  # Crea la tarea en la DB y trae el ID para poder actualizar el registro despues de la conversion
             guardarArchivo(file, id_task, fileName)       
             convertirArchivo.delay(fileName , format, id_task) #Cola de tarea
+            #pruebaConversion()
+            #conversion(fileName, format, id_task)
             
             return {
                 "mensaje": 'se ha subido el archivo correctamente y en un tiempo la conversion sera completada para su descarga, por favor revisar en unos minutos',
