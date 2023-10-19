@@ -1,4 +1,5 @@
 import os
+import time
 from flask import request
 from flask_jwt_extended import jwt_required, create_access_token, decode_token, get_jwt_identity
 from flask_restful import Resource
@@ -8,7 +9,8 @@ from tareas import convertirArchivo, validacionArchivos, crearTareaEnDB, guardar
 
 from modelos import \
     db, \
-    Usuario, Tareas \
+    Usuario, Tareas, \
+    UsuarioSchema, TareasSchema
 
 """ 
     VistaSignup
@@ -16,6 +18,8 @@ from modelos import \
     Parametros: { username (String), password1 (String), password2 (String), email (String) } 
     Retorna: { mensaje }
 """
+
+tareas_schema = TareasSchema()
 class VistaSignup(Resource):
     def post(self):
         usuario = Usuario.query.filter(Usuario.correo_electronico == request.json["email"]).first()
@@ -64,7 +68,15 @@ class VistaTasks(Resource):
         max = request.args.get("max")
         order = request.args.get("order")
         userId = get_jwt_identity()
-        return {"tareas": ['todas las tareas listadas para este usuario'] , "maxFilter": max, "orderFilter": order}
+        if order == 0:
+            print("el usurio : " , userId)
+            tareas = Tareas.query.filter(Tareas.usuario == userId).order_by(Tareas.nombre.asc()).limit(max)
+            print("tareas : " , tareas)
+        else:
+            tareas = Tareas.query.filter(Tareas.usuario == userId).order_by(Tareas.nombre.desc()).limit(max)
+        
+        return [tareas_schema.dump(tarea) for tarea in tareas]
+        #return {"tareas": ['todas las tareas listadas para este usuario'] , "maxFilter": max, "orderFilter": order}
     
     @jwt_required()
     def post(self): #Luis
@@ -134,16 +146,16 @@ class VistaTask(Resource):
                 "mensaje": "No existe una tarea con este id"
             }, 404
         
-        archivoEliminar = tarea.nombre
-        
         db.session.delete(tarea)
         db.session.commit()
 
         carpetaArchivos = 'archivos/' + str(tarea.id) + '/'
-        rutaArchivo = os.path.join(carpetaArchivos, archivoEliminar)
+        carpetaCompleta  = 'archivos/' + str(tarea.id)
 
-        if os.path.exists(rutaArchivo):
-            os.remove(rutaArchivo)
+        if os.path.exists(carpetaArchivos):
+            for i in os.listdir(carpetaArchivos):
+                os.remove(os.path.join(carpetaArchivos, i))
+            os.rmdir(os.path.join(carpetaCompleta))
 
             return { 
                     "idTask": id_task,

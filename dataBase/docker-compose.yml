@@ -20,6 +20,14 @@ services:
     command: redis-server --save 20 1 --loglevel warning
     volumes: 
       - cache:/data
+
+  apache:
+    image: httpd:latest
+    container_name: carpetasApache
+    ports:
+    - '8080:80'
+    volumes:
+    - ../archivos:/usr/local/apache2/htdocs
 volumes:
   cache:
     driver: local
