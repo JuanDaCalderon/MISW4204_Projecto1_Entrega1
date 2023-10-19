@@ -148,8 +148,6 @@ class VistaTask(Resource):
                 "mensaje": "No existe una tarea con este id"
             }, 404
         
-        #archivoEliminar = tarea.nombre
-        
         db.session.delete(tarea)
         db.session.commit()
 
