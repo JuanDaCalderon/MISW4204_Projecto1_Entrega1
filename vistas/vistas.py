@@ -67,9 +67,12 @@ class VistaTasks(Resource):
         max = request.args.get("max")
         order = request.args.get("order")
         userId = get_jwt_identity()
-        print("el usurio : " , userId)
-        tareas = Tareas.query.filter(Tareas.usuario == userId).order_by(Tareas.nombre.asc()).limit(max)
-        print("tareas : " , tareas)
+        if order == 0:
+            print("el usurio : " , userId)
+            tareas = Tareas.query.filter(Tareas.usuario == userId).order_by(Tareas.nombre.asc()).limit(max)
+            print("tareas : " , tareas)
+        else:
+            tareas = Tareas.query.filter(Tareas.usuario == userId).order_by(Tareas.nombre.desc()).limit(max)
         
         return [tareas_schema.dump(tarea) for tarea in tareas]
         #return {"tareas": ['todas las tareas listadas para este usuario'] , "maxFilter": max, "orderFilter": order}
