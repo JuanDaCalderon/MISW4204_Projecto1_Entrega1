@@ -7,7 +7,7 @@ from flask_jwt_extended import jwt_required, create_access_token, decode_token, 
 from flask_restful import Resource
 import hashlib
 from datetime import datetime
-from tareas import convertirArchivo, validacionArchivos, crearTareaEnDB, crearCarpeta, guardarArchivo
+from tareas import convertirArchivo, validacionArchivos, crearTareaEnDB, guardarArchivo
 
 from modelos import \
     db, \
@@ -97,9 +97,7 @@ class VistaTasks(Resource):
             id_task = crearTareaEnDB(fileName, format, fechaDeCreacion, userId)  # Crea la tarea en la DB y trae el ID para poder actualizar el registro despues de la conversion
             guardarArchivo(file, id_task, fileName)       
             convertirArchivo.delay(fileName , format, id_task) #Cola de tarea
-            #pruebaConversion()
-            #conversion(fileName, format, id_task)
-            
+                        
             return {
                 "mensaje": 'se ha subido el archivo correctamente y en un tiempo la conversion sera completada para su descarga, por favor revisar en unos minutos',
                 "archivo": fileName,
