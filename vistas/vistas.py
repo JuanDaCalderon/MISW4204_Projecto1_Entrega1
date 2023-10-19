@@ -1,4 +1,5 @@
 import os
+import time
 from flask import request
 from flask_jwt_extended import jwt_required, create_access_token, decode_token, get_jwt_identity
 from flask_restful import Resource
@@ -147,16 +148,18 @@ class VistaTask(Resource):
                 "mensaje": "No existe una tarea con este id"
             }, 404
         
-        archivoEliminar = tarea.nombre
+        #archivoEliminar = tarea.nombre
         
         db.session.delete(tarea)
         db.session.commit()
 
         carpetaArchivos = 'archivos/' + str(tarea.id) + '/'
-        rutaArchivo = os.path.join(carpetaArchivos, archivoEliminar)
+        carpetaCompleta  = 'archivos/' + str(tarea.id)
 
-        if os.path.exists(rutaArchivo):
-            os.remove(rutaArchivo)
+        if os.path.exists(carpetaArchivos):
+            for i in os.listdir(carpetaArchivos):
+                os.remove(os.path.join(carpetaArchivos, i))
+            os.rmdir(os.path.join(carpetaCompleta))
 
             return { 
                     "idTask": id_task,

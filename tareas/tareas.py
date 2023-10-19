@@ -43,7 +43,7 @@ def conversion(fileName, format, id_task):
     nombreArchivo = getNombreArchivo(fileName)[0]    
     fileName = "archivos/" + str(id_task) + "/" + fileName
     video = VideoFileClip(fileName)
-    video.write_videofile("archivos/" + str(id_task) + "/" + nombreArchivo + "." + format, codec=seleccionarCodec(format))
+    video.write_videofile("archivos/" + str(id_task) + "/" + nombreArchivo + "." + format, codec="mpeg4")
     #video = VideoFileClip("archivos/VideoCorto.mp4")
     #video.write_videofile("archivos/pruebas/VideoCorto.mpeg", codec="mpeg4")
 
