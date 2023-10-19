@@ -1,3 +1,4 @@
+import os
 from flask import request
 from flask_jwt_extended import jwt_required, create_access_token, decode_token, get_jwt_identity
 from flask_restful import Resource
@@ -118,7 +119,32 @@ class VistaTask(Resource):
         
     @jwt_required()
     def delete(self, id_task): # Leo
-        return { 
+        userId = get_jwt_identity()
+
+        tarea = Tareas.query.filter(Tareas.id == id_task, Tareas.usuario == userId).first()
+
+        if tarea is None:
+            return{
+                "mensaje": "No existe una tarea con este id"
+            }, 404
+        
+        archivoEliminar = tarea.nombre
+        
+        db.session.delete(tarea)
+        db.session.commit()
+
+        carpetaArchivos = 'archivos/' + str(tarea.id) + '/'
+        rutaArchivo = os.path.join(carpetaArchivos, archivoEliminar)
+
+        if os.path.exists(rutaArchivo):
+            os.remove(rutaArchivo)
+
+            return { 
+                    "idTask": id_task,
+                    "mensaje": "Tarea eliminada correctamente y archivo eliminado de la ruta"
+                }
+        else:
+            return{
                 "idTask": id_task,
-                "mensaje": "Tarea eliminada correctamente"
+                    "mensaje": "No se encontró el archivo en la ruta"
             }
