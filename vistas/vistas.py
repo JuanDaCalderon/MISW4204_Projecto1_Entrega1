@@ -4,7 +4,7 @@ from flask_jwt_extended import jwt_required, create_access_token, decode_token, 
 from flask_restful import Resource
 import hashlib
 from datetime import datetime
-from tareas import convertirArchivo
+from tareas import convertirArchivo, validacionArchivos, crearTareaEnDB, crearCarpeta, guardarArchivo
 
 from modelos import \
     db, \
@@ -77,22 +77,30 @@ class VistaTasks(Resource):
     @jwt_required()
     def post(self): #Luis
         file = request.files['fileName']
+        fileName = file.filename
         format = request.form["newFormat"]
-        fechaDeCreacion = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
-        userId = get_jwt_identity()
-        nueva_tarea = Tareas(nombre=file.filename, convertirFormato = format, timeStamp=fechaDeCreacion, status='uploaded', usuario=userId)
-        db.session.add(nueva_tarea)
-        db.session.commit()
         
-        convertirArchivo.delay(file.filename , format, nueva_tarea.id) #Cola de tarea
-        return {
-            "mensaje": 'se ha subido el archivo correctamente y en un tiempo la conversion sera completada para su descarga, por favor revisar en unos minutos',
-            "archivo": file.filename,
-            "Nuevo formato": format,
-            "fecha Creacion": fechaDeCreacion,
-            "id_Usuario": userId
+        validacion = validacionArchivos(fileName, format)
+        
+        if validacion != "":
+            return { "mensaje": validacion 
         }
-
+        else:
+            fechaDeCreacion = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
+            userId = get_jwt_identity()
+            id_task = crearTareaEnDB(fileName, format, fechaDeCreacion, userId)  # Crea la tarea en la DB y trae el ID para poder actualizar el registro despues de la conversion
+            guardarArchivo(file, id_task, fileName)       
+            convertirArchivo.delay(fileName , format, id_task) #Cola de tarea
+            #pruebaConversion()
+            #conversion(fileName, format, id_task)
+            
+            return {
+                "mensaje": 'se ha subido el archivo correctamente y en un tiempo la conversion sera completada para su descarga, por favor revisar en unos minutos',
+                "archivo": fileName,
+                "Nuevo formato": format,
+                "fecha Creacion": fechaDeCreacion,
+                "id_Usuario": userId
+            }
 
 """ 
     VistaTask
