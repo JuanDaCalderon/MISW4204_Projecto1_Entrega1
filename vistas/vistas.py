@@ -83,7 +83,7 @@ class VistaTasks(Resource):
         db.session.add(nueva_tarea)
         db.session.commit()
         
-        convertirArchivo.delay(file.filename , format) #Cola de tarea
+        convertirArchivo.delay(file.filename , format, nueva_tarea.id) #Cola de tarea
         return {
             "mensaje": 'se ha subido el archivo correctamente y en un tiempo la conversion sera completada para su descarga, por favor revisar en unos minutos',
             "archivo": file.filename,
