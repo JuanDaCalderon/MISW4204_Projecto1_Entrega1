@@ -8,7 +8,6 @@ from modelos import db, Tareas
 from moviepy.editor import *
 
 formatosPermitidos = ["mp4", "webm", "avi", "mpeg", "wmv"]
-#formatosPermitidos = ["mp4", "webm", "mpeg", "wmv"]
 videosPruebas = ["VideoCorto.mp4", ]
 
 @shared_task(queue="cola", ignore_result=False)
