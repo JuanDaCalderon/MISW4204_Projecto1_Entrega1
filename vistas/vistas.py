@@ -1,5 +1,7 @@
 import os
-import time
+from dotenv import load_dotenv
+load_dotenv('.env')
+from os import environ
 from flask import request
 from flask_jwt_extended import jwt_required, create_access_token, decode_token, get_jwt_identity
 from flask_restful import Resource
@@ -103,7 +105,8 @@ class VistaTasks(Resource):
                 "archivo": fileName,
                 "Nuevo formato": format,
                 "fecha Creacion": fechaDeCreacion,
-                "id_Usuario": userId
+                "id_Usuario": userId, 
+                "id_Task": id_task
             }
 
 """ 
@@ -126,14 +129,13 @@ class VistaTask(Resource):
         else:
             archivoOriginal = str(tarea.nombre)
             archivoConvertido = str(str(tarea.nombre).split(".")[0].lower() + '.' + tarea.convertirFormato).lower()
-            path = 'archivos/' + str(tarea.id) + '/'
+            path = environ.get('APACHE_HOST') + str(tarea.id) + '/'
             return { 
                     "id": idTask,
                     "mensaje": "Archivos recuperados exitosamente",
                     "tarea" : {
                         "archivoOriginal": path + archivoOriginal,
                         "archivoConvertido": path + archivoConvertido,
-                        "url de descarga": 'https://www.adslzone.net/app/uploads-adslzone.net/2019/04/borrar-fondo-imagen-1200x675.jpg'
                     }
                 }
         
