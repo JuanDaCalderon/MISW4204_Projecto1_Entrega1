@@ -1,0 +1,1142 @@
+{
+	"info": {
+		"_postman_id": "2921b487-7ad4-4432-9a5b-c046110342f7",
+		"name": "MISW4204_desarrollo_en_nube",
+		"description": "Colección correspondiente a la aplicación para convertir archivos de video a un formato diferente, los formatos soportados son: mp4, webm, avi, mpeg, wmv\n\n# QuickStart\n\nAntes de poder correr la colección y cada una de sus peticiones, debe asegurarse que las siguientes variables de colección están creadas:\n\n| Variable de colección | Valor por defecto |\n| --- | --- |\n| host | http://localhost:500 |\n| auth | Token de autorización |",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10947516"
+	},
+	"item": [
+		{
+			"name": "SignIn",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"user\",\r\n    \"password1\": \"123456\",\r\n    \"password2\": \"123456\",\r\n    \"email\": \"user@gmail.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/auth/signup",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"signup"
+					]
+				},
+				"description": "## Registra un nuevo usuario\n\n- No se permiten correos repetidos\n- Las contraseñas en los campos _**password1**_ y _**password2**_ deben coincidir"
+			},
+			"response": [
+				{
+					"name": "200 - Usuario registrado",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"user2\",\r\n    \"password1\": \"123456\",\r\n    \"password2\": \"123456\",\r\n    \"email\": \"user2@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/auth/signup",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"signup"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "Werkzeug/2.3.7 Python/3.9.6"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 20 Oct 2023 01:28:18 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "52"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"mensaje\": \"usuario creado exitosamente\",\n    \"id\": 4\n}"
+				},
+				{
+					"name": "404 - Usuario con el mismo correo",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"user2\",\r\n    \"password1\": \"123456\",\r\n    \"password2\": \"123456\",\r\n    \"email\": \"user2@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/auth/signup",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"signup"
+							]
+						}
+					},
+					"status": "NOT FOUND",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "Werkzeug/2.3.7 Python/3.9.6"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 20 Oct 2023 01:29:27 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "39"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": "\"El usuario ya existe con este correo\""
+				},
+				{
+					"name": "404 - Las contraseñas no coinciden",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"user\",\r\n    \"password1\": \"123456\",\r\n    \"password2\": \"123456f\",\r\n    \"email\": \"user@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/auth/signup",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"signup"
+							]
+						}
+					},
+					"status": "NOT FOUND",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "Werkzeug/2.3.7 Python/3.9.6"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 20 Oct 2023 01:30:08 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "36"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": "\"Las contraseñas no coinciden\""
+				}
+			]
+		},
+		{
+			"name": "LogIn",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (pm.response.code == 200) {\r",
+							"    var data = JSON.parse(responseBody);\r",
+							"    pm.collectionVariables.set(\"auth\", data.token);\r",
+							"}\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n    \"username\": \"user\",\r\n    \"password\": \"123456\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/auth/login",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				},
+				"description": "## Ingresar con un usuario registrado\n\n- Las credenciales deben existir asociadas a un usuario"
+			},
+			"response": [
+				{
+					"name": "200 - Login correcto",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n    \"username\": \"user\",\r\n    \"password\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/auth/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "Werkzeug/2.3.7 Python/3.9.6"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 20 Oct 2023 01:31:07 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "395"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"mensaje\": \"Inicio de sesión exitoso\",\n    \"token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY5Nzc2NTQ2NywianRpIjoiMWNiNGEzMmMtNTI0Yi00NWUxLWI2ZmUtNjEyMTA1Yzk0YjYxIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MywibmJmIjoxNjk3NzY1NDY3LCJleHAiOjE2OTc3NjYzNjcsImlkIjozLCJ1c2VybmFtZSI6InVzZXIiLCJlbWFpbCI6InVzZXJAZ21haWwuY29tIn0.EwPFhNVNH-aDfqC0ypAF2JwIafHqBF6mVUb8seObQYk\",\n    \"id\": 3\n}"
+				},
+				{
+					"name": "404 - Login incorrecto",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n    \"username\": \"user\",\r\n    \"password\": \"12345x6\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/auth/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"status": "NOT FOUND",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "Werkzeug/2.3.7 Python/3.9.6"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 20 Oct 2023 01:35:21 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "46"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": "\"El usuario no existe con estas credenciales\""
+				}
+			]
+		},
+		{
+			"name": "Listar Tasks",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/api/tasks?max=10&order=1",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"tasks"
+					],
+					"query": [
+						{
+							"key": "max",
+							"value": "10"
+						},
+						{
+							"key": "order",
+							"value": "1"
+						}
+					]
+				},
+				"description": "## Listar todas las tareas\n\n- Lista las tareas, si no hay tareas; muestra un Array vacio \\[\\]\n    \n- Tiene dos Query Params para filtrar la busqueda en un número maximo de tareas devueltas (MAX) y en un order Ascendente o Descendente (ORDER)"
+			},
+			"response": [
+				{
+					"name": "200 - Lista tareas (No hay tareas)",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/tasks?max=10&order=1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"tasks"
+							],
+							"query": [
+								{
+									"key": "max",
+									"value": "10"
+								},
+								{
+									"key": "order",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "Werkzeug/2.3.7 Python/3.9.6"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 20 Oct 2023 01:36:01 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "3"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": "[]"
+				},
+				{
+					"name": "200 - Lista tareas (Si hay tareas)",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/tasks?max=10&order=1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"tasks"
+							],
+							"query": [
+								{
+									"key": "max",
+									"value": "10"
+								},
+								{
+									"key": "order",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "Werkzeug/2.3.7 Python/3.9.6"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 20 Oct 2023 01:37:17 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "141"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": 8,\n        \"nombre\": \"VideoCorto.mp4\",\n        \"convertirFormato\": \"wmv\",\n        \"timeStamp\": \"10/19/2023, 20:37:08\",\n        \"status\": \"processed\",\n        \"usuario\": 3\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Create a Task",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "fileName",
+							"type": "file",
+							"src": "/C:/Users/juanda/Documents/MAESTRIA/8_Desarrollo_de_software_en_la_nube/MISW4204_Projecto1_Entrega1/archivos/VideoCorto.mp4"
+						},
+						{
+							"key": "newFormat",
+							"value": "avi",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{host}}/api/tasks",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"tasks"
+					]
+				},
+				"description": "## Crea una tarea que corresponde a un video que queremos convertir\n\n- Recibe un archivo de tipo video\n- Recibe el nuevo formato al que queremos convertir como un String\n- El formato a convertir no debe ser el mismo del video original\n- El formato debe ser alguno de los siguientes soportados: \\[ mp4, webm, avi, mpeg, wmv \\]"
+			},
+			"response": [
+				{
+					"name": "200 - Archivo subido y tarea creada",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "fileName",
+									"type": "file",
+									"src": "/C:/Users/juanda/Documents/MAESTRIA/8_Desarrollo_de_software_en_la_nube/MISW4204_Projecto1_Entrega1/archivos/VideoCorto.mp4"
+								},
+								{
+									"key": "newFormat",
+									"value": "wmv",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host}}/api/tasks",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"tasks"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "Werkzeug/2.3.7 Python/3.9.6"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 20 Oct 2023 01:38:34 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "276"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"mensaje\": \"se ha subido el archivo correctamente y en un tiempo la conversion sera completada para su descarga, por favor revisar en unos minutos\",\n    \"archivo\": \"VideoCorto.mp4\",\n    \"Nuevo formato\": \"wmv\",\n    \"fecha Creacion\": \"10/19/2023, 20:38:34\",\n    \"id_Usuario\": 3,\n    \"id_Task\": 9\n}"
+				},
+				{
+					"name": "404 - Mismo formato del video a convertir",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "fileName",
+									"type": "file",
+									"src": "/C:/Users/juanda/Documents/MAESTRIA/8_Desarrollo_de_software_en_la_nube/MISW4204_Projecto1_Entrega1/archivos/VideoCorto.mp4"
+								},
+								{
+									"key": "newFormat",
+									"value": "mp4",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host}}/api/tasks",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"tasks"
+							]
+						}
+					},
+					"status": "NOT FOUND",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "Werkzeug/2.3.7 Python/3.9.6"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 20 Oct 2023 01:40:24 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "74"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"mensaje\": \"El formato de destino es el mismo que el formato de origen\"\n}"
+				},
+				{
+					"name": "404 - No es un formato valido",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "fileName",
+									"type": "file",
+									"src": "/C:/Users/juanda/Documents/MAESTRIA/8_Desarrollo_de_software_en_la_nube/MISW4204_Projecto1_Entrega1/archivos/VideoCorto.mp4"
+								},
+								{
+									"key": "newFormat",
+									"value": "mp3",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host}}/api/tasks",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"tasks"
+							]
+						}
+					},
+					"status": "NOT FOUND",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "Werkzeug/2.3.7 Python/3.9.6"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 20 Oct 2023 01:40:57 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "50"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"mensaje\": \"El formato de destino no es valido\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Get a Task",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/api/tasks/9",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"tasks",
+						"9"
+					]
+				},
+				"description": "## Trae la tarea para descargar los archivos una vez han sido procesados\n\n- Toca pasarle el ID de la tarea correspondiente a el usuario\n- Si la tarea con este ID no existe responde con un 404\n- Si la tarea aun no ha terminado de procesar el archivo sale un mensaje informando que aun no ha temrinado de procesar el archivo\n    \n- Una vez la conversion ha finalizado, podremos obtener una URL para descargar tanto el video original como el video convertido"
+			},
+			"response": [
+				{
+					"name": "404 - No existe la tarea con este ID",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/tasks/6",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"tasks",
+								"6"
+							]
+						}
+					},
+					"status": "NOT FOUND",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "Werkzeug/2.3.7 Python/3.9.6"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 20 Oct 2023 01:41:24 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "47"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"mensaje\": \"No existe una tarea con este id\"\n}"
+				},
+				{
+					"name": "200 - Conversion en proceso",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/tasks/10",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"tasks",
+								"10"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "Werkzeug/2.3.7 Python/3.9.6"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 20 Oct 2023 01:43:43 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "93"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"mensaje\": \"Aun no se ha terminado de convertir el archivo, vuelve a intentarlo mas tarde\"\n}"
+				},
+				{
+					"name": "200 - Tarea completada y videos recuperados",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/tasks/9",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"tasks",
+								"9"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "Werkzeug/2.3.7 Python/3.9.6"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 20 Oct 2023 01:44:08 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "193"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 9,\n    \"mensaje\": \"Archivos recuperados exitosamente\",\n    \"tarea\": {\n        \"archivoOriginal\": \"http://localhost:8080/9/VideoCorto.mp4\",\n        \"archivoConvertido\": \"http://localhost:8080/9/videocorto.wmv\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Delete a Task",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/api/tasks/8",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"tasks",
+						"8"
+					]
+				},
+				"description": "## Elimina una tarea\n\n- Toca pasarle el ID de la tarea correspondiente a el usuario\n- Si la tarea con este ID no existe responde con un 404\n- Se eliminara la tarea de la base de datos asi como los archivos (Original y el Convertido)"
+			},
+			"response": [
+				{
+					"name": "404 - No existe una tarea con este ID",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/tasks/8",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"tasks",
+								"8"
+							]
+						}
+					},
+					"status": "NOT FOUND",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "Werkzeug/2.3.7 Python/3.9.6"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 20 Oct 2023 01:45:16 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "47"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"mensaje\": \"No existe una tarea con este id\"\n}"
+				},
+				{
+					"name": "401 - El token expiro",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/tasks/8",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"tasks",
+								"8"
+							]
+						}
+					},
+					"status": "UNAUTHORIZED",
+					"code": 401,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "Werkzeug/2.3.7 Python/3.9.6"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 20 Oct 2023 01:46:35 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "28"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"msg\": \"Token has expired\"\n}"
+				},
+				{
+					"name": "200 - Tarea y archivos eliminados",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/tasks/8",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"tasks",
+								"8"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "Werkzeug/2.3.7 Python/3.9.6"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 20 Oct 2023 01:47:15 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "89"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"idTask\": 8,\n    \"mensaje\": \"Tarea eliminada correctamente y archivo eliminado de la ruta\"\n}"
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{auth}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "http://localhost:5000",
+			"type": "string"
+		},
+		{
+			"key": "auth",
+			"value": "Token desde LOGIN",
+			"type": "string"
+		}
+	]
+}
