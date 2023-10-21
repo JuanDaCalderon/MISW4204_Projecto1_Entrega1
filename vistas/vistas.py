@@ -98,7 +98,7 @@ class VistaTasks(Resource):
     def post(self):  # Luis
         file = request.files['fileName']
         fileName = file.filename
-        format = request.form["newFormat"]
+        format = request.form["newFormat"].lower()
 
         validacion = validacionArchivos(fileName, format)
 
