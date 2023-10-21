@@ -1,5 +1,9 @@
 # MISW4204_Projecto1_Entrega1
-MISW4204 Desarrollo de software en la nube
+## CONVERSOR DE ARCHIVOS
+Aplicación desarrollada en flask con Postgress DB, Redis y Celery
+
+
+# Pasos para lanzar la aplicación
 
 ## Lanzar el redis
 redis-server <- WSL Ubuntu
