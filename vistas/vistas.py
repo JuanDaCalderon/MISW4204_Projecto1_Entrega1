@@ -144,8 +144,7 @@ class VistaTask(Resource):
             return {"mensaje": "Aun no se ha terminado de convertir el archivo, vuelve a intentarlo mas tarde"}
         else:
             archivoOriginal = str(tarea.nombre)
-            archivoConvertido = str(str(tarea.nombre).split(
-                ".")[0].lower() + '.' + tarea.convertirFormato).lower()
+            archivoConvertido = str(str(tarea.nombre).split(".")[0] + '.' + str(tarea.convertirFormato).lower())
             path = environ.get('APACHE_HOST') + str(tarea.id) + '/'
             return {
                 "id": idTask,
