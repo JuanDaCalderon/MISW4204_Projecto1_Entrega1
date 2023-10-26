@@ -14,7 +14,7 @@ videosPruebas = ["VideoCorto.mp4", ]
 @shared_task(queue="cola", ignore_result=False)
 def convertirArchivo(file, format, id_task):
     #Aqui se hace la conversión del archivo al nuevo formato, despues hay que cambiar el valor del estado de la tarea en la base de datos
-    UpdateEstado(id_task, "in progress")    # Actualiza el registro de la tarea a processed    
+    UpdateEstado(id_task, "in progress")    # Actualiza el registro de la tarea a in progress    
     format = format.replace('.','') # Elimina el punto de la extension en caso de que lo tenga
     conversion(file, format, id_task)
     UpdateEstado(id_task, "processed")    # Actualiza el registro de la tarea a processed    
