@@ -6,6 +6,7 @@ from celery import shared_task
 from flask_jwt_extended import jwt_required, create_access_token, decode_token, get_jwt_identity
 from modelos import db, Tareas
 from moviepy.editor import *
+from datetime import datetime
 
 formatosPermitidos = ["mp4", "webm", "avi", "mpeg", "wmv"]
 videosPruebas = ["VideoCorto.mp4", ]
@@ -13,15 +14,16 @@ videosPruebas = ["VideoCorto.mp4", ]
 @shared_task(queue="cola", ignore_result=False)
 def convertirArchivo(file, format, id_task):
     #Aqui se hace la conversión del archivo al nuevo formato, despues hay que cambiar el valor del estado de la tarea en la base de datos
+    UpdateEstado(id_task, "in progress")    # Actualiza el registro de la tarea a processed    
     format = format.replace('.','') # Elimina el punto de la extension en caso de que lo tenga
     conversion(file, format, id_task)
-    UpdateEstado(id_task)    # Actualiza el registro de la tarea    
+    UpdateEstado(id_task, "processed")    # Actualiza el registro de la tarea a processed    
     
 def validacionArchivos(file, format):   
     result = ""
-    format = format.replace('.','') # Elimina el punto de la extension en caso de que lo tenga
+    format = format.replace('.','').lower() # Elimina el punto de la extension en caso de que lo tenga
         
-    if format.lower() in formatosPermitidos:    # Valida que el formato enviado este dentro de los permitidos
+    if format in formatosPermitidos:    # Valida que el formato enviado este dentro de los permitidos
         extensionArchivo = (getNombreArchivo(file)[1]).replace('.','') # Trae la extension del archivo de origen
         if extensionArchivo.lower() in formatosPermitidos: # Valida que el formato del archivo enviado este dentro de los permitidos
             if format == extensionArchivo:         
@@ -67,12 +69,16 @@ def getNombreArchivo(file):
     return os.path.splitext(ruta[1]) # retorna arreglo con el nombre del archivo y la extension
 
 def crearTareaEnDB(file, format, fechaDeCreacion, userId):
-    nueva_tarea = Tareas(nombre=file, convertirFormato = format, timeStamp=fechaDeCreacion, status='uploaded', usuario=userId)
+    nueva_tarea = Tareas(nombre=file, convertirFormato = format, timeStampCarga=fechaDeCreacion, timeStampInicioProcesamiento = '', timeStampFinProcesamiento = '', tiempoProcesamiento = "",status='uploaded', usuario=userId)
     db.session.add(nueva_tarea)
-    db.session.commit() # Crea la tarea en el base de datos   
+    db.session.commit() # Crea la tarea en el base de datos      
     return db.session.query(Tareas).order_by(Tareas.id.desc()).first().id # Devuelve el id de la tarea creada
     
-def UpdateEstado(id):
+def UpdateEstado(id, estado):
     tarea = Tareas.query.filter(Tareas.id == id).first()
-    tarea.status = 'processed'
+    if estado == 'in progress':
+        tarea.timeStampInicioProcesamiento = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
+    else:
+        tarea.timeStampFinProcesamiento = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
+    tarea.status = estado
     db.session.commit()
