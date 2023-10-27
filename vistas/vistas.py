@@ -63,7 +63,7 @@ class VistaLogin(Resource):
             additional_claims = {
                 "id": usuario.id, "username": usuario.usuario, "email": usuario.correo_electronico}
             token_de_acceso = create_access_token(
-                identity=usuario.id, additional_claims=additional_claims)
+                identity=usuario.id, additional_claims=additional_claims, expires_delta=False)
             return {"mensaje": "Inicio de sesión exitoso", "token": token_de_acceso, "id": usuario.id}
 
 
