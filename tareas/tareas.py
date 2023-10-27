@@ -80,5 +80,14 @@ def UpdateEstado(id, estado):
         tarea.timeStampInicioProcesamiento = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
     else:
         tarea.timeStampFinProcesamiento = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
+                
+        horaInicio = tarea.timeStampInicioProcesamiento.split(',')[1].strip()
+        hHoraInicio = datetime.strptime(horaInicio, '%H:%M:%S')
+        
+        horaFin = tarea.timeStampFinProcesamiento.split(',')[1].strip()
+        hHoraFin = datetime.strptime(horaFin, '%H:%M:%S')
+        
+        tarea.tiempoProcesamiento = hHoraFin - hHoraInicio
+        
     tarea.status = estado
     db.session.commit()
