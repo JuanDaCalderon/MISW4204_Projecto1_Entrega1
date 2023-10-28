@@ -3,9 +3,8 @@ import calendar
 import os
 import errno
 from celery import shared_task
-from flask_jwt_extended import jwt_required, create_access_token, decode_token, get_jwt_identity
 from modelos import db, Tareas
-from moviepy.editor import *
+from moviepy.editor import VideoFileClip # just import what you need
 from datetime import datetime
 
 formatosPermitidos = ["mp4", "webm", "avi", "mpeg", "wmv"]
@@ -37,8 +36,7 @@ def validacionArchivos(file, format):
 
 def conversion(fileName, format, id_task):
     nombreArchivo = getNombreArchivo(fileName)[0]    
-    fileName = "archivos/" + str(id_task) + "/" + fileName
-    video = VideoFileClip(fileName)
+    video = VideoFileClip("archivos/" + str(id_task) + "/" + fileName).resize(0.1)
     if format == "mp4" or format == "wmv":
         video.write_videofile("archivos/" + str(id_task) + "/" + nombreArchivo + "." + format, codec="libx264")
     elif format == "webm":
@@ -47,6 +45,7 @@ def conversion(fileName, format, id_task):
         video.write_videofile("archivos/" + str(id_task) + "/" + nombreArchivo + "." + format, codec="png")
     elif format == "mpeg":
         video.write_videofile("archivos/" + str(id_task) + "/" + nombreArchivo + "." + format, codec="mpeg4")
+    video.close()
     
 def crearCarpeta(id_task):
     ruta = "archivos/" + str(id_task)
