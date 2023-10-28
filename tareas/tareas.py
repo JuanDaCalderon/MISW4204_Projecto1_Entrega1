@@ -53,9 +53,9 @@ def crearCarpeta(id_task):
     try:
         os.mkdir(ruta)
     except OSError as e:
-        if e.erno != errno.EEXIST:
+        if e.errno != errno.EEXIST:
             raise
-    return ruta   + "/"
+    return ruta + "/"
  
 def guardarArchivo(file, id_task, fileName):
     file.save(os.path.join(crearCarpeta(id_task), fileName))
