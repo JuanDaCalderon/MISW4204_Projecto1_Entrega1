@@ -30,8 +30,8 @@ app.config['JWT_SECRET_KEY'] = 'frase-secreta'
 app.config['PROPAGATE_EXCEPTIONS'] = True
 app.config.from_mapping(
     CELERY=dict(
-        broker_url="redis://localhost:6379/0",
-        result_backend="redis://localhost:6379/0",
+        broker_url="redis://"+environ.get('REDIS_SERVER')+":6379/0",
+        result_backend="redis://"+environ.get('REDIS_SERVER')+":6379/0",
         task_ignore_result=True
     ),
 )
