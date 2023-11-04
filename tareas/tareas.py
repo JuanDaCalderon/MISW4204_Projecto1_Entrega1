@@ -9,7 +9,7 @@ from datetime import datetime
 from google.cloud import storage
 
 #bucket_name = os.getenv('GCLOUD_BUCKET')
-storage_client = storage.Client.from_service_account_json('..\\miso-cursonube-424-f0bada5992c4.json')
+storage_client = storage.Client.from_service_account_json('miso-cursonube-424-f0bada5992c4.json')
 bucket = storage_client.get_bucket('bucket-flask')
 
 formatosPermitidos = ["mp4", "webm", "avi", "mpeg", "wmv"]
