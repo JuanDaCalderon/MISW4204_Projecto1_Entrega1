@@ -11,6 +11,8 @@ from vistas import \
     VistaSignup, VistaLogin, \
     VistaTasks, VistaTask \
 
+
+
 def celery_init_app(app: Flask) -> Celery:
     class FlaskTask(Task):
         def __call__(self, *args: object, **kwargs: object) -> object:

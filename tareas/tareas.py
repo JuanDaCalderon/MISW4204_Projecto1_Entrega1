@@ -6,6 +6,11 @@ from celery import shared_task
 from modelos import db, Tareas
 from moviepy.editor import VideoFileClip # just import what you need
 from datetime import datetime
+from google.cloud import storage
+
+#bucket_name = os.getenv('GCLOUD_BUCKET')
+storage_client = storage.Client.from_service_account_json('../miso-cursonube-424-f0bada5992c4.json')
+bucket = storage_client.get_bucket('bucket-flask')
 
 formatosPermitidos = ["mp4", "webm", "avi", "mpeg", "wmv"]
 videosPruebas = ["VideoCorto.mp4", ]
@@ -15,7 +20,7 @@ def convertirArchivo(file, format, id_task):
     #Aqui se hace la conversión del archivo al nuevo formato, despues hay que cambiar el valor del estado de la tarea en la base de datos
     UpdateEstado(id_task, "in progress")    # Actualiza el registro de la tarea a in progress    
     format = format.replace('.','') # Elimina el punto de la extension en caso de que lo tenga
-    conversion(file, format, id_task)
+    conversionCloud(file, format, id_task)
     UpdateEstado(id_task, "processed")    # Actualiza el registro de la tarea a processed    
     
 def validacionArchivos(file, format):   
@@ -47,6 +52,38 @@ def conversion(fileName, format, id_task):
         video.write_videofile("archivos/" + str(id_task) + "/" + nombreArchivo + "." + format, codec="mpeg4")
     video.close()
     
+def conversionCloud(fileName, format, id_task):
+    crearCarpeta(id_task)
+    nombreArchivo = getNombreArchivo(fileName)[0]  
+    ruta_local = "archivos/" + str(id_task) + "/" + fileName
+    archivo = bucket.blob("archivos/" +str(id_task) + '/' + fileName)
+    archivo.download_to_filename(ruta_local)
+    video_clip = VideoFileClip(ruta_local).resize(0.1)
+    nuevo_nombre_archivo = nombreArchivo + "." + format
+    nueva_ruta_local = "archivos/" + str(id_task) + "/"  + nuevo_nombre_archivo
+    if format == "mp4" or format == "wmv":
+        video_clip.write_videofile(nueva_ruta_local, codec="libx264")
+        nuevo_archivo = bucket.blob("archivos/" +str(id_task) + '/' + nuevo_nombre_archivo)
+        nuevo_archivo.upload_from_filename(nueva_ruta_local)
+    elif format == "webm":
+        video_clip.write_videofile(nueva_ruta_local, codec="libvpx")
+        nuevo_archivo = bucket.blob("archivos/" +str(id_task) + '/' + nuevo_nombre_archivo)
+        nuevo_archivo.upload_from_filename(nueva_ruta_local)
+    elif format == "avi":
+        video_clip.write_videofile(nueva_ruta_local, codec="png")
+        nuevo_archivo = bucket.blob("archivos/" +str(id_task) + '/' + nuevo_nombre_archivo)
+        nuevo_archivo.upload_from_filename(nueva_ruta_local)
+    elif format == "mpeg":
+        video_clip.write_videofile(nueva_ruta_local, codec="mpeg4")
+        nuevo_archivo = bucket.blob("archivos/" +str(id_task) + '/' + nuevo_nombre_archivo)
+        nuevo_archivo.upload_from_filename(nueva_ruta_local)
+    video_clip.close()
+    
+    if os.path.exists('archivos/' + str(id_task) + '/'):
+            for i in os.listdir('archivos/' + str(id_task) + '/'):
+                os.remove(os.path.join('archivos/' + str(id_task) + '/', i))
+            os.rmdir(os.path.join('archivos/' + str(id_task)))
+    
 def crearCarpeta(id_task):
     ruta = "archivos/" + str(id_task)
     try:
@@ -59,6 +96,12 @@ def crearCarpeta(id_task):
 def guardarArchivo(file, id_task, fileName):
     file.save(os.path.join(crearCarpeta(id_task), fileName))
  
+def guardarArchivoCloud(file, id_task, fileName):
+    blob = bucket.blob("archivos/" + str(id_task)+"/" + fileName)
+    blob.upload_from_file(file)
+    
+
+
 def getTimeStamp():
     current_GMT = time.gmtime() # time actual
     return calendar.timegm(current_GMT) # retorna el valor timeStamp

@@ -2,7 +2,7 @@ from modelos import \
     db, \
     Usuario, Tareas, \
     UsuarioSchema, TareasSchema
-from tareas import convertirArchivo, validacionArchivos, crearTareaEnDB, guardarArchivo
+from tareas import convertirArchivo, validacionArchivos, crearTareaEnDB, guardarArchivo,guardarArchivoCloud
 from datetime import datetime
 import hashlib
 from flask_restful import Resource
@@ -109,7 +109,7 @@ class VistaTasks(Resource):
             userId = get_jwt_identity()
             # Crea la tarea en la DB y trae el ID para poder actualizar el registro despues de la conversion
             id_task = crearTareaEnDB(fileName, format, fechaDeCreacion, userId)
-            guardarArchivo(file, id_task, fileName)
+            guardarArchivoCloud(file, id_task, fileName)
             convertirArchivo.delay(fileName, format, id_task)  # Cola de tarea
 
             return {

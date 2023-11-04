@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "miso-cursonube-424",
+  "private_key_id": "f0bada5992c4e988e2c89aaa87a94c7f0eadbc80",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQC12xXJOxdfUru1\nLSlWI8EPC3NGHDb4ryNNQV51XBB7U44BgkbWWDdYzsRIJDJWCyPkxN6l/somyywv\nH+0C7FS4o2jzZbOvgoCv+RYZDo2IZ0JejagQ/qfU6a8z3tBlaFqtxClqRN0HZOXW\nuIkfGrJy9ENPP4IYK/pt+aB+zBuPwqTqfC8+iLp/ycLRW9Jj0DmZxRL7C39lpzOZ\nFgIYtCFPUXqq1kzfROZW9k8gQrxVq5Wh+N3Q/PaYCK9alXHRjAMvJrM0jF5Ky+il\nQ1dQnH71r8GsXHycxDLitPU9NHelWSnKEGNZuIdSJnAm9+/9S64TPKOLmXZ4ZRZc\nS3/tQceFAgMBAAECggEAAgh7O9v8LHmIQAxIEFtHbDVjBhqtkfiwPOof4BSFAmPA\noj+NoTdl+kXsJTKX+sn+9rjV2AnAQszm4kfwZYDTPdA2Mq5S6cG3RKBiUpy8DXpc\nRVGjxiIGS6sfG1bCXSN0Laghr4IBnMIXAhmOqilESbV8Q6KJ2wCCw0hxtqjFmJXu\n+7qPNRx6blfm9uniyVXzCvohxMK0nLqANfE/x0L1TrDidcwlReIxtyFZAGO+fM1b\nlM0+8sAi3Zfkwlt2S4uzvyi2yp4s8pw0NgCSTOAdMnWbc7iWsOJaUyLuvhO+lBCA\nEDhfQ/hhlLDYYdA3BMfBdw2odWAdEL9wvPKCnpY3QQKBgQDY7VNih9K5QXHR6ddK\ni6COv7aUvjmrfgK3pV7DX8bhPcKj2GPcQjjMdsMMeQ9une1X4NsrKEKEcEHZjn5i\nLcmGqQ+TdtqEuMZbIy7fcHE4RdPzEe3wQBD08BFrAxLQRCia2Uv5fHvOI9QkPxn4\n4MWyrxNPWMhWhFCtbLd1nkxKwQKBgQDWnJjHmzRxbwgqxA0jW5AxblAxyRQCQAuv\n3IgreEQXiY7qQpkDnYhB9gr88I+U9/+SmMVVWpFhD4Soe0CQD+z5OSGzhRFRN1Qd\nLMZvFfbZ0zhp4HwhwFTCUj7+WxSHhwaFpoefvV9qQKYr6uUbv7bHfFGNEIAkKZS4\ndlNNCCGBxQKBgHlgoa2aDgB2a/dmfn5JjjcRclnb7mzUfzS+pT1wk9loM0Z2R7nw\nm9NcCFssScQ9PZZUTI3jYwSzw0S2BGVu9ToR0pNSh4aH1QUdtJZ1VgSEncl+GMK7\nNkG3KifUemxqFsY+G9KnIqb/SS5W2HN3YWdPquBU7xPpyTKgiC6ZulqBAoGARb5q\nYCPuLRb6PnusEVuGRqok4akJGZoasjInBol1B3kqurKd63DcgSMmewDqiGz333pK\nVuyx5isW33H+j1K9nliUvTR3Zj9m1HximGM4750W7kGH1agdY3E7C4op58lXs0Nl\nO+JdCbisyAT0I8pv6fBayE8edaIVtMSvWY9U5EkCgYAV3CyOMYlm1ZpFxWsfoIkj\n2kDLftE9ULEI+eN+Pq8WKsKtkeDATHSi7h4aoVAD9a4UuA8CJWlY+43LjZqXimQh\ngWIm1/dAXKPZIgqPobgkfNqAkxU/KV57/Zk4fVUkwrlsu9gx7dOaqG3RAEPNPF9X\n04wkKiQPDG/tLrX+rmWF7A==\n-----END PRIVATE KEY-----\n",
+  "client_email": "storage-flask@miso-cursonube-424.iam.gserviceaccount.com",
+  "client_id": "115786637217698917163",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/storage-flask%40miso-cursonube-424.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
