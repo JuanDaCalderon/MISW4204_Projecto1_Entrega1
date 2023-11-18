@@ -16,7 +16,7 @@
 
 import argparse
 from typing import Optional
-
+from tareas import convertirArchivo
 from google.cloud import pubsub_v1
 
 
@@ -30,6 +30,8 @@ def sub(project_id: str, subscription_id: str, timeout: Optional[float] = None) 
 
     def callback(message: pubsub_v1.subscriber.message.Message) -> None:
         print(f"Received {message}.")
+        print("el mensaje : ", message.json())
+        #convertirArchivo()
         # Acknowledge the message. Unack'ed messages will be redelivered.
         message.ack()
         print(f"Acknowledged {message.message_id}.")

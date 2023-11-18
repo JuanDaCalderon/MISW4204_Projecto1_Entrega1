@@ -15,7 +15,7 @@ bucket = storage_client.get_bucket('bucket-flask')
 formatosPermitidos = ["mp4", "webm", "avi", "mpeg", "wmv"]
 videosPruebas = ["VideoCorto.mp4", ]
 
-@shared_task(queue="cola", ignore_result=False)
+# @shared_task(queue="cola", ignore_result=False)
 def convertirArchivo(file, format, id_task):
     #Aqui se hace la conversión del archivo al nuevo formato, despues hay que cambiar el valor del estado de la tarea en la base de datos
     UpdateEstado(id_task, "in progress")    # Actualiza el registro de la tarea a in progress    
