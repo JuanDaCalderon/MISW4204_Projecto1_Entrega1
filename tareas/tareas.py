@@ -118,7 +118,7 @@ def crearTareaEnDB(file, format, fechaDeCreacion, userId):
     return db.session.query(Tareas).order_by(Tareas.id.desc()).first().id # Devuelve el id de la tarea creada
     
 def UpdateEstado(id, estado):
-    with app.app_context():
+    with app.app.app_context():
         tarea = Tareas.query.filter(Tareas.id == id).first()
         if estado == 'in progress':
             tarea.timeStampInicioProcesamiento = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
