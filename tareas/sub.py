@@ -30,7 +30,7 @@ def sub(project_id: str, subscription_id: str, timeout: Optional[float] = None) 
 
     def callback(message: pubsub_v1.subscriber.message.Message) -> None:
         print(f"Received {message}.")
-        print("el mensaje : ", message.json())
+        print("el dato : ", message.split(","))
         #convertirArchivo()
         # Acknowledge the message. Unack'ed messages will be redelivered.
         message.ack()
