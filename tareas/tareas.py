@@ -6,7 +6,7 @@ from celery import shared_task
 from modelos import db, Tareas
 from moviepy.editor import VideoFileClip # just import what you need
 from datetime import datetime
-from app import app
+import app
 from google.cloud import storage
 
 #bucket_name = os.getenv('GCLOUD_BUCKET')
