@@ -10,7 +10,7 @@ from modelos import db
 
 import argparse
 from typing import Optional
-from tareas import convertirArchivo
+import tareas 
 from google.cloud import pubsub_v1
 
 
@@ -29,7 +29,7 @@ def sub(project_id: str, subscription_id: str, timeout: Optional[float] = None) 
         datos[0] = datos[0].replace("b'","")
         datos[2] = datos[2].replace("'","")
         print(f"Received {datos[0], datos[1], int(datos[2])}")
-        convertirArchivo(datos[0], datos[1], int(datos[2]))
+        tareas.convertirArchivo(datos[0], datos[1], int(datos[2]))
         # Acknowledge the message. Unack'ed messages will be redelivered.
         message.ack()
         print(f"Acknowledged {message.message_id}.")
