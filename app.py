@@ -9,7 +9,7 @@ from celery import Celery, Task
 from modelos import db
 from vistas import \
     VistaSignup, VistaLogin, \
-    VistaTasks, VistaTask \
+    VistaTasks, VistaTask 
 
 
 
@@ -37,6 +37,7 @@ app.config.from_mapping(
         task_ignore_result=True
     ),
 )
+
 
 celery_app = celery_init_app(app)
 
