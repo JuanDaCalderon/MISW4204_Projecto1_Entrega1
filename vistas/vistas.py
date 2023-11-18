@@ -121,7 +121,7 @@ class VistaTasks(Resource):
                 'id_task':id_task,
                  'format': format
                 }
-            data = data_str.encode("utf-8")
+            data = str(data_str).encode("utf-8")
             future = publisher.publish(topic_path, data)
             print(future.result())
             return {
