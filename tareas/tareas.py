@@ -17,12 +17,12 @@ formatosPermitidos = ["mp4", "webm", "avi", "mpeg", "wmv"]
 videosPruebas = ["VideoCorto.mp4", ]
 
 # @shared_task(queue="cola", ignore_result=False)
-def convertirArchivo(file, format, id_task):
+def convertirArchivo(file, format, id_task, application):
     #Aqui se hace la conversión del archivo al nuevo formato, despues hay que cambiar el valor del estado de la tarea en la base de datos
-    UpdateEstado(id_task, "in progress")    # Actualiza el registro de la tarea a in progress    
+    UpdateEstado(id_task, "in progress", application)    # Actualiza el registro de la tarea a in progress    
     format = format.replace('.','') # Elimina el punto de la extension en caso de que lo tenga
     conversionCloud(file, format, id_task)
-    UpdateEstado(id_task, "processed")    # Actualiza el registro de la tarea a processed    
+    UpdateEstado(id_task, "processed", application)    # Actualiza el registro de la tarea a processed    
     
 def validacionArchivos(file, format):   
     result = ""
@@ -53,7 +53,7 @@ def conversion(fileName, format, id_task):
         video.write_videofile("archivos/" + str(id_task) + "/" + nombreArchivo + "." + format, codec="mpeg4")
     video.close()
     
-def conversionCloud(fileName, format, id_task):
+def conversionCloud(fileName, format, id_task, application):
     crearCarpeta(id_task)
     nombreArchivo = getNombreArchivo(fileName)[0]  
     ruta_local = "archivos/" + str(id_task) + "/" + fileName
@@ -79,7 +79,7 @@ def conversionCloud(fileName, format, id_task):
         nuevo_archivo = bucket.blob("archivos/" +str(id_task) + '/' + nuevo_nombre_archivo)
         nuevo_archivo.upload_from_filename(nueva_ruta_local)
     video_clip.close()
-    
+        
     if os.path.exists('archivos/' + str(id_task) + '/'):
             for i in os.listdir('archivos/' + str(id_task) + '/'):
                 os.remove(os.path.join('archivos/' + str(id_task) + '/', i))
@@ -117,8 +117,8 @@ def crearTareaEnDB(file, format, fechaDeCreacion, userId):
     db.session.commit() # Crea la tarea en el base de datos      
     return db.session.query(Tareas).order_by(Tareas.id.desc()).first().id # Devuelve el id de la tarea creada
     
-def UpdateEstado(id, estado):
-    with app.app.app_context():
+def UpdateEstado(id, estado, application):
+    with application:
         tarea = Tareas.query.filter(Tareas.id == id).first()
         if estado == 'in progress':
             tarea.timeStampInicioProcesamiento = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
