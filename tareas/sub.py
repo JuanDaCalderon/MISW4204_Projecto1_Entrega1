@@ -16,7 +16,7 @@
 
 import argparse
 from typing import Optional
-import tareas
+from tareas import convertirArchivo
 from google.cloud import pubsub_v1
 
 
