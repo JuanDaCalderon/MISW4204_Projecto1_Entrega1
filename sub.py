@@ -61,7 +61,7 @@ def sub(project_id: str, subscription_id: str, timeout: Optional[float] = None) 
 
 
 if __name__ == "__main__":
-    app.run()
+    
     parser = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter,
     )
@@ -72,5 +72,5 @@ if __name__ == "__main__":
     )
 
     args = parser.parse_args()
-
+    app.run()
     sub(args.project_id, args.subscription_id, args.timeout)
