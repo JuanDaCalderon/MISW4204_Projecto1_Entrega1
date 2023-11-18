@@ -10,6 +10,7 @@ from flask_jwt_extended import jwt_required, create_access_token, decode_token, 
 from flask import request
 from os import environ
 import os
+from google.cloud import pubsub_v1
 from dotenv import load_dotenv
 load_dotenv('.env')
 
@@ -110,8 +111,15 @@ class VistaTasks(Resource):
             # Crea la tarea en la DB y trae el ID para poder actualizar el registro despues de la conversion
             id_task = crearTareaEnDB(fileName, format, fechaDeCreacion, userId)
             guardarArchivoCloud(file, id_task, fileName)
-            convertirArchivo.delay(fileName, format, id_task)  # Cola de tarea
-
+            # convertirArchivo.delay(fileName, format, id_task)  # Cola de tarea
+            publisher = pubsub_v1.PublisherClient()
+            # The `topic_path` method creates a fully qualified identifier
+            # in the form `projects/{project_id}/topics/{topic_id}`
+            topic_path = publisher.topic_path("miso-cursonube-424", "backen-flask")
+            data_str = "Message de prueba "
+            data = data_str.encode("utf-8")
+            future = publisher.publish(topic_path, data)
+            print(future.result())
             return {
                 "mensaje": 'se ha subido el archivo correctamente y en un tiempo la conversion sera completada para su descarga, por favor revisar en unos minutos',
                 "archivo": fileName,
