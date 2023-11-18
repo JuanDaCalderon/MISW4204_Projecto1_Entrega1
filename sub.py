@@ -32,7 +32,7 @@ def sub(project_id: str, subscription_id: str, timeout: Optional[float] = None) 
         print(f"Received {message}.")
         datos = str(message.data).split(',')
         print(f"Received {datos}")
-        #convertirArchivo(datos[0], datos[1], datos[2])
+        convertirArchivo(datos[0], datos[1], datos[2])
         # Acknowledge the message. Unack'ed messages will be redelivered.
         message.ack()
         print(f"Acknowledged {message.message_id}.")
