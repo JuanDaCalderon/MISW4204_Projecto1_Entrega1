@@ -6,6 +6,7 @@ from celery import shared_task
 from modelos import db, Tareas
 from moviepy.editor import VideoFileClip # just import what you need
 from datetime import datetime
+from app import app
 from google.cloud import storage
 
 #bucket_name = os.getenv('GCLOUD_BUCKET')
@@ -117,19 +118,20 @@ def crearTareaEnDB(file, format, fechaDeCreacion, userId):
     return db.session.query(Tareas).order_by(Tareas.id.desc()).first().id # Devuelve el id de la tarea creada
     
 def UpdateEstado(id, estado):
-    tarea = Tareas.query.filter(Tareas.id == id).first()
-    if estado == 'in progress':
-        tarea.timeStampInicioProcesamiento = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
-    else:
-        tarea.timeStampFinProcesamiento = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
-                
-        horaInicio = tarea.timeStampInicioProcesamiento.split(',')[1].strip()
-        hHoraInicio = datetime.strptime(horaInicio, '%H:%M:%S')
-        
-        horaFin = tarea.timeStampFinProcesamiento.split(',')[1].strip()
-        hHoraFin = datetime.strptime(horaFin, '%H:%M:%S')
-        
-        tarea.tiempoProcesamiento = hHoraFin - hHoraInicio
-        
-    tarea.status = estado
-    db.session.commit()
+    with app.app_context():
+        tarea = Tareas.query.filter(Tareas.id == id).first()
+        if estado == 'in progress':
+            tarea.timeStampInicioProcesamiento = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
+        else:
+            tarea.timeStampFinProcesamiento = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
+                    
+            horaInicio = tarea.timeStampInicioProcesamiento.split(',')[1].strip()
+            hHoraInicio = datetime.strptime(horaInicio, '%H:%M:%S')
+            
+            horaFin = tarea.timeStampFinProcesamiento.split(',')[1].strip()
+            hHoraFin = datetime.strptime(horaFin, '%H:%M:%S')
+            
+            tarea.tiempoProcesamiento = hHoraFin - hHoraInicio
+            
+        tarea.status = estado
+        db.session.commit()
