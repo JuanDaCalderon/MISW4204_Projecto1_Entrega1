@@ -18,7 +18,7 @@ import argparse
 from typing import Optional
 from tareas import convertirArchivo
 from google.cloud import pubsub_v1
-import os
+from app import app
 from flask import Flask
 
 
@@ -61,7 +61,7 @@ def sub(project_id: str, subscription_id: str, timeout: Optional[float] = None) 
 
 
 if __name__ == "__main__":
-    app.run(debug=True,host='0.0.0.0',port=int(os.environ.get('PORT', 8081)))
+    app.run()
     parser = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter,
     )
