@@ -7,9 +7,7 @@ load_dotenv('.env')
 from os import environ
 from celery import Celery, Task
 from modelos import db
-from vistas import \
-    VistaSignup, VistaLogin, \
-    VistaTasks, VistaTask 
+
 import argparse
 from typing import Optional
 from tareas import convertirArchivo
