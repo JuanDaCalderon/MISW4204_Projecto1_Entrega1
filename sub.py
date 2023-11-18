@@ -18,7 +18,11 @@ import argparse
 from typing import Optional
 from tareas import convertirArchivo
 from google.cloud import pubsub_v1
+import os
+from flask import Flask
 
+
+app = Flask(__name__)
 
 def sub(project_id: str, subscription_id: str, timeout: Optional[float] = None) -> None:
     """Receives messages from a Pub/Sub subscription."""
@@ -57,6 +61,7 @@ def sub(project_id: str, subscription_id: str, timeout: Optional[float] = None) 
 
 
 if __name__ == "__main__":
+    app.run(debug=True,host='0.0.0.0',port=int(os.environ.get('PORT', 8080)))
     parser = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter,
     )
