@@ -53,7 +53,7 @@ def conversion(fileName, format, id_task):
         video.write_videofile("archivos/" + str(id_task) + "/" + nombreArchivo + "." + format, codec="mpeg4")
     video.close()
     
-def conversionCloud(fileName, format, id_task, application):
+def conversionCloud(fileName, format, id_task):
     crearCarpeta(id_task)
     nombreArchivo = getNombreArchivo(fileName)[0]  
     ruta_local = "archivos/" + str(id_task) + "/" + fileName
