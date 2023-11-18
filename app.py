@@ -96,6 +96,21 @@ def sub(project_id: str, subscription_id: str, timeout: Optional[float] = None) 
 
 
 if __name__ == "__main__":
+    
+    app = Flask(__name__)
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://'+environ.get('PGSQL_USER')+':'+environ.get('PGSQL_PASSWORD')+'@'+environ.get('PGSQL_HOST')+'/'+ environ.get('PGSQL_DB')
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config['JWT_SECRET_KEY'] = 'frase-secreta'
+    app.config['PROPAGATE_EXCEPTIONS'] = True
+    
+    app_context = app.app_context()
+    app_context.push()
+
+    db.init_app(app)
+    db.create_all()
+
+    cors = CORS(app)
+       
     parser = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter,
     )
