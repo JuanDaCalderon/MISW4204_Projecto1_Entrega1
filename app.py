@@ -29,7 +29,7 @@ def sub(project_id: str, subscription_id: str, timeout: Optional[float] = None) 
         datos[0] = datos[0].replace("b'","")
         datos[2] = datos[2].replace("'","")
         print(f"Received {datos[0], datos[1], int(datos[2])}")
-        tareas.convertirArchivo(datos[0], datos[1], int(datos[2]))
+        tareas.convertirArchivo(datos[0], datos[1], int(datos[2]),app_context)
         # Acknowledge the message. Unack'ed messages will be redelivered.
         message.ack()
         print(f"Acknowledged {message.message_id}.")
