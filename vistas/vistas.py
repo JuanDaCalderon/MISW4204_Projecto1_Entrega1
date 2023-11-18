@@ -118,12 +118,8 @@ class VistaTasks(Resource):
             # The `topic_path` method creates a fully qualified identifier
             # in the form `projects/{project_id}/topics/{topic_id}`
             topic_path = publisher.topic_path("miso-cursonube-424", "backen-flask")
-            data_str = {
-                'fileName': fileName,
-                'id_task':id_task,
-                 'format': format
-                }
-            data = str(data_str).encode("utf-8")
+            data_str = fileName + "," +id_task +","+format
+            data = data_str.encode("utf-8")
             future = publisher.publish(topic_path, data)
             print(future.result())
             return {
