@@ -26,6 +26,7 @@ docker-compose up -d
 ```bash 
 celery -A app.celery_app worker -Q cola -n cola@worker --pool=solo -l info
 ```
+python .\app.py nube-4204 recive worker
 
 ```bash 
 Flask run
