@@ -30,7 +30,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://'+environ.get('PGSQL_USER'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = 'frase-secreta'
 app.config['PROPAGATE_EXCEPTIONS'] = True
-app.config.from_mapping(
+'''app.config.from_mapping(
     CELERY=dict(
         broker_url="redis://"+environ.get('REDIS_SERVER')+":6379/0",
         result_backend="redis://"+environ.get('REDIS_SERVER')+":6379/0",
@@ -39,7 +39,7 @@ app.config.from_mapping(
 )
 
 celery_app = celery_init_app(app)
-
+'''
 app_context = app.app_context()
 app_context.push()
 

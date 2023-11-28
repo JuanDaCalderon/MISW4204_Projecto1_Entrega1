@@ -117,7 +117,7 @@ class VistaTasks(Resource):
             publisher = pubsub_v1.PublisherClient()
             # The `topic_path` method creates a fully qualified identifier
             # in the form `projects/{project_id}/topics/{topic_id}`
-            topic_path = publisher.topic_path("miso-cursonube-424", "backen-flask")
+            topic_path = publisher.topic_path("nube-4204", "backend-flask")
             data_str = fileName + "," + format + ","+ str(id_task)
             data = data_str.encode("utf-8")
             future = publisher.publish(topic_path, data)
