@@ -8,4 +8,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 EXPOSE 5000
 
-CMD ["python", "app.py", "nube-4204", "recive", "worker"]
+CMD ["python", "app.py", "nube-4204", "receive", "worker"]
