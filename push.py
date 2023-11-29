@@ -28,9 +28,9 @@ except Exception as e:
 def receive_push():
     try:
         # Verifica la autenticación del servicio de Pub/Sub
-        token = request.headers.get('Authorization')
+        '''token = request.headers.get('Authorization')
         if not token or not token.startswith('Bearer '):
-            abort(401, 'Unauthorized')
+            abort(401, 'Unauthorized')'''
 
         # Verifica la firma de la solicitud (opcional pero recomendado para seguridad)
         # Más información: https://cloud.google.com/pubsub/docs/push#verifying-signatures
@@ -39,6 +39,10 @@ def receive_push():
         # Procesa el mensaje recibido
         message = request.get_json()
         print(f"Mensaje recibido: {message}")
+        datos = str(message.data).split(',')
+        datos[0] = datos[0].replace("b'","")
+        datos[2] = datos[2].replace("'","")
+        print(f"Received {datos[0], datos[1], int(datos[2])}")
 
         # Realiza cualquier lógica de procesamiento necesario aquí
 
