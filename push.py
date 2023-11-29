@@ -42,7 +42,7 @@ def receive_push():
         datos = str(message.data).split(',')
         datos[0] = datos[0].replace("b'","")
         datos[2] = datos[2].replace("'","")
-        tareas.convertirArchivo(datos[0], datos[1], int(datos[2]),app)
+        #tareas.convertirArchivo(datos[0], datos[1], int(datos[2]),app)
 
         # Realiza cualquier lógica de procesamiento necesario aquí
 
