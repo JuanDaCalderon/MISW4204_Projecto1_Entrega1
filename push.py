@@ -39,9 +39,9 @@ def receive_push():
         # Procesa el mensaje recibido
         message = request.get_json()
         print(f"Mensaje recibido: {message}")
-        datos = str(message.data).split(',')
-        datos[0] = datos[0].replace("b'","")
-        datos[2] = datos[2].replace("'","")
+        #datos = str(message.data).split(',')
+        #datos[0] = datos[0].replace("b'","")
+        #datos[2] = datos[2].replace("'","")
         #tareas.convertirArchivo(datos[0], datos[1], int(datos[2]),app)
 
         # Realiza cualquier lógica de procesamiento necesario aquí
