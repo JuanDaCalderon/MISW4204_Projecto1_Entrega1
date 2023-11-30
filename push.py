@@ -45,7 +45,7 @@ def receive_push():
         # Verifica la autenticación del servicio de Pub/Sub
         '''token = request.headers.get('Authorization')
         if not token or not token.startswith('Bearer '):
-            abort(401, 'Unauthorized')'''
+            abort(401, 'Unauthorized') '''
 
         # Verifica la firma de la solicitud (opcional pero recomendado para seguridad)
         # Más información: https://cloud.google.com/pubsub/docs/push#verifying-signatures
