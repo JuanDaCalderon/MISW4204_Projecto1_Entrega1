@@ -128,7 +128,8 @@ class VistaTasks(Resource):
                 "Nuevo formato": format,
                 "fecha Creacion": fechaDeCreacion,
                 "id_Usuario": userId,
-                "id_Task": id_task
+                "id_Task": id_task,
+                "id_pubsub": future.result()
             }
 
 
