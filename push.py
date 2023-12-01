@@ -5,6 +5,8 @@ from dotenv import load_dotenv
 load_dotenv('.env')
 from os import environ
 from modelos import db
+import base64
+import json
 
 app = Flask(__name__)
 
@@ -52,11 +54,17 @@ def receive_push():
         # Puedes implementar la lógica de verificación de firma según tus necesidades de seguridad.
 
         # Procesa el mensaje recibido
-        message = request.get_data()
-        print(f"Mensaje recibido: {message}")
-        datos = str(message).split(',')
-        datos[0] = datos[0].replace("b'","")
-        datos[2] = datos[2].replace("'","")
+        message = request.get_data().decode('utf-8')
+        message_data_json = json.loads(message)
+        print(f"Mensaje recibido: {message_data_json.get('message','vacio').get('data')}")
+        message_data_base64 = message_data_json.get('message','vacio').get('data')
+        message_data_bytes = base64.b64decode(message_data_base64)
+        message_data_str = message_data_bytes.decode('utf-8')
+        
+        print(f"Mensaje json: {message_data_str}")
+        datos = message_data_str.split(',')
+        #datos[0] = datos[0].replace("b'","")
+        #datos[2] = datos[2].replace("'","")
         print(f"Received {datos[0], datos[1], int(datos[2])}")
 
         # Realiza cualquier lógica de procesamiento necesario aquí
